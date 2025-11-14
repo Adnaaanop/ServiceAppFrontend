@@ -6,9 +6,11 @@
     "service-provider-app": {
       "projectType": "application",
       "schematics": {
+        
         "@schematics/angular:component": {
           "style": "scss",
-          "standalone": false
+          "standalone": false,
+          "type": "component"
         },
         "@schematics/angular:directive": {
           "standalone": false
@@ -16,6 +18,7 @@
         "@schematics/angular:pipe": {
           "standalone": false
         }
+        
       },
       "root": "",
       "sourceRoot": "src",
@@ -101,5 +104,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

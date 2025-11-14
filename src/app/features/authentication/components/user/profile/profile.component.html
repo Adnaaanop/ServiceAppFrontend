@@ -1,0 +1,17 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="max-w-md w-full bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Your Profile</h1>
+
+    <div *ngIf="userProfile; else loading">
+      <p class="mb-2"><strong>Name:</strong> {{ userProfile.name }}</p>
+      <p class="mb-2"><strong>Email:</strong> {{ userProfile.email }}</p>
+      <p class="mb-2"><strong>Phone:</strong> {{ userProfile.phone }}</p>
+      <p class="mb-2"><strong>Address:</strong> {{ userProfile.address }}</p>
+      <p class="mb-2"><strong>Preferred Services:</strong> {{ userProfile.preferredServices }}</p>
+    </div>
+
+    <ng-template #loading>
+      <p class="text-gray-500 text-center">Loading profile...</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="max-w-4xl mx-auto p-6 bg-white rounded shadow">
+  <h1 class="text-3xl font-semibold mb-6">Provider Profile</h1>
+
+  <div *ngIf="loading" class="text-gray-500">Loading profile...</div>
+  <div *ngIf="error" class="text-red-600 font-semibold">{{ error }}</div>
+
+  <div *ngIf="profile && !loading">
+    <p><strong>Business Name:</strong> {{ profile.businessName }}</p>
+    <p><strong>Description:</strong> {{ profile.businessDescription }}</p>
+
+    <p><strong>Service Categories:</strong></p>
+    <ul class="list-disc list-inside mb-4">
+      <li *ngFor="let c of profile.serviceCategories">{{ c }}</li>
+    </ul>
+
+    <p><strong>Certificates:</strong></p>
+    <ul class="list-disc list-inside mb-4">
+      <li *ngFor="let url of profile.certificateUrls">{{ url }}</li>
+    </ul>
+
+    <p><strong>Licenses:</strong></p>
+    <ul class="list-disc list-inside mb-4">
+      <li *ngFor="let url of profile.licenseUrls">{{ url }}</li>
+    </ul>
+
+    <p><strong>Documents:</strong></p>
+    <ul class="list-disc list-inside mb-4">
+      <li *ngFor="let url of profile.documentUrls">{{ url }}</li>
+    </ul>
+
+    <p><strong>Service Areas:</strong></p>
+    <ul class="list-disc list-inside mb-4">
+      <li *ngFor="let area of profile.serviceAreas">{{ area }}</li>
+    </ul>
+
+    <p><strong>Availability:</strong></p>
+    <ul class="list-disc list-inside mb-4">
+      <li *ngFor="let day of parseJsonString(profile.availabilityJson)">{{ day }}</li>
+    </ul>
+
+    <p><strong>Status:</strong>
+      <span [ngClass]="{ 'text-green-600': profile.isApproved, 'text-red-600': !profile.isApproved }">
+        {{ profile.isApproved ? 'Approved' : 'Pending Approval' }}
+      </span>
+    </p>
+  </div>
+</div>

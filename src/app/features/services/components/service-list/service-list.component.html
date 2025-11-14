@@ -1,0 +1,41 @@
+<div class="mb-6 p-4">
+  <h1 class="text-2xl font-bold mb-3">Browse Services</h1>
+  <input
+    type="text"
+    placeholder="Search services..."
+    [(ngModel)]="searchQuery"
+    class="border rounded px-3 py-2 w-full max-w-md"
+  />
+</div>
+
+<div class="flex gap-2 overflow-x-auto p-4 mb-6">
+  <button
+    *ngFor="let category of categories"
+    (click)="selectCategory(category.id)"
+    [class.font-bold]="selectedCategory === category.id"
+    class="whitespace-nowrap rounded px-4 py-2 border cursor-pointer"
+    [ngClass]="category.color"
+  >
+    {{ category.name }}
+  </button>
+</div>
+
+<div *ngIf="loading" class="text-center py-10 text-blue-800">
+  Loading services...
+</div>
+<div *ngIf="error" class="text-center py-3 text-red-700 font-bold">
+  {{ error }}
+</div>
+
+<div
+  *ngIf="!loading && filteredServices.length"
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-blue-50"
+>
+  <div *ngFor="let service of filteredServices">
+    <app-service-card [service]="service"></app-service-card>
+  </div>
+</div>
+
+<div *ngIf="!loading && !filteredServices.length" class="text-center py-8 text-blue-800">
+  No services available.
+</div>
