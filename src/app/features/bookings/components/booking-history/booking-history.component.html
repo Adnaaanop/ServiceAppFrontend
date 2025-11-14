@@ -1,0 +1,24 @@
+<div *ngIf="loading" class="text-center py-10 text-blue-700">
+  Loading your bookings...
+</div>
+
+<div *ngIf="error" class="text-center py-4 text-red-600 font-semibold">
+  {{ error }}
+</div>
+
+<div *ngIf="!loading && bookings.length === 0" class="text-center py-6 text-blue-700 font-semibold">
+  No bookings found.
+</div>
+
+<div *ngIf="!loading && bookings.length > 0" class="max-w-4xl mx-auto space-y-4 p-4">
+  <div *ngFor="let booking of bookings" class="border rounded p-4 shadow cursor-pointer hover:bg-blue-50" (click)="viewBookingDetails(booking.id)">
+    <h3 class="text-lg font-semibold">Service ID: {{ booking.serviceId }}</h3>
+    <p>
+      Status: <span [class]="booking.status === 'Pending' ? 'text-yellow-600' : 'text-green-600'">{{ booking.status }}</span><br />
+      Location: {{ booking.location }}<br />
+      Time Slot: {{ booking.timeSlotStart | date:'medium' }} - {{ booking.timeSlotEnd | date:'medium' }}<br />
+      Estimated Cost: {{ booking.estimatedCost | currency }}<br />
+      Created On: {{ booking.createdAt | date:'medium' }}
+    </p>
+  </div>
+</div>

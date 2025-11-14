@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Service, ServicesService } from '../../services/services.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class ServiceDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private servicesService: ServicesService
+    private servicesService: ServicesService,
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
@@ -35,4 +36,8 @@ export class ServiceDetailsComponent implements OnInit {
       this.loading = false;
     }
   }
+  bookNow() {
+  if (!this.service) return;
+  this.router.navigate(['/bookings', this.service.id, 'book']);
+}
 }
