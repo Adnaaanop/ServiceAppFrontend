@@ -3,15 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../enviroments/enviroment';
 
+// Request payload - matches your backend POST schema
 export interface BookingPayload {
+  userId: string;
+  providerId: string;
   serviceId: string;
-  address: string;
-  phone: string;
-  bookingDate: string;
-  timeSlot: string;
-  notes?: string;
+  timeSlotStart: string; // ISO datetime string
+  timeSlotEnd: string;   // ISO datetime string
+  location: string;
+  estimatedCost: number;
 }
 
+// Response interface - what you get back from the API
 export interface Booking {
   id: string;
   userId: string;
@@ -36,11 +39,24 @@ export class BookingsService {
 
   constructor(private http: HttpClient) {}
 
-  createBooking(payload: BookingPayload): Observable<any> {
-    return this.http.post(this.apiUrl, payload);
+  createBooking(payload: BookingPayload): Observable<Booking> {
+    return this.http.post<Booking>(this.apiUrl, payload);
   }
+
   getUserBookings(): Observable<Booking[]> {
     // Assumes backend returns bookings for logged-in user
     return this.http.get<Booking[]>(this.apiUrl);
+  }
+
+  getBookingById(bookingId: string): Observable<Booking> {
+    return this.http.get<Booking>(`${this.apiUrl}/${bookingId}`);
+  }
+
+  updateBooking(bookingId: string, payload: Partial<BookingPayload>): Observable<Booking> {
+    return this.http.put<Booking>(`${this.apiUrl}/${bookingId}`, payload);
+  }
+
+  cancelBooking(bookingId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${bookingId}`);
   }
 }
