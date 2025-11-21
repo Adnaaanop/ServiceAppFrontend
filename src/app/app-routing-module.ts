@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LandingComponent } from './features/landing/landing.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  { path: '', component: LandingComponent },
   {
     path: 'auth',
     loadChildren: () => import('./features/authentication/authentication-module').then(m => m.AuthenticationModule)
@@ -14,7 +15,11 @@ const routes: Routes = [
   {
     path: 'bookings',
     loadChildren: () => import('./features/bookings/bookings-module').then(m => m.BookingsModule),
-  }
+  },
+  {
+  path: 'dashboard',
+  loadChildren: () => import('./features/user-dashboard/user-dashboard.module').then(m => m.UserDashboardModule)
+}
 
 ];
 

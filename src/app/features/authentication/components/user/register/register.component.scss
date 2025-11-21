@@ -1,0 +1,366 @@
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// Register Card
+.register-card {
+  animation: fadeIn 0.8s ease-out;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Logo Animation
+.logo-wrapper {
+  animation: fadeIn 1s ease-out;
+}
+
+.logo-icon {
+  animation: float 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+// Input Wrapper
+.input-wrapper {
+  position: relative;
+  
+  input {
+    transition: all 0.3s ease;
+    
+    &:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+    
+    &::placeholder {
+      transition: all 0.3s ease;
+    }
+    
+    &:focus::placeholder {
+      opacity: 0.5;
+      transform: translateX(5px);
+    }
+  }
+  
+  svg {
+    transition: all 0.3s ease;
+  }
+  
+  input:focus ~ svg,
+  input:focus + div svg {
+    color: #6366f1;
+    transform: scale(1.1);
+  }
+  
+  // Eye icon hover
+  button {
+    svg {
+      transition: transform 0.2s ease;
+    }
+    
+    &:hover svg {
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Password Strength Indicator
+.h-2 {
+  transition: all 0.3s ease;
+}
+
+// Floating Background Shapes
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  animation: float 8s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+.shape-1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  top: -200px;
+  left: -200px;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  bottom: -150px;
+  right: -150px;
+  animation-delay: 2s;
+}
+
+.shape-3 {
+  width: 350px;
+  height: 350px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  top: 50%;
+  right: -175px;
+  animation-delay: 4s;
+}
+
+// Animation Classes
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out both;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+// Button Hover Effects
+button {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+  
+  &:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Social Button Hover
+button[type="button"] {
+  &:hover {
+    svg {
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+// Loading Spinner
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+// Form Focus States
+form {
+  .space-y-2 {
+    label {
+      transition: color 0.3s ease;
+    }
+    
+    &:focus-within label {
+      color: #6366f1;
+    }
+  }
+}
+
+// Password Strength Bar Animation
+.bg-red-500,
+.bg-yellow-500,
+.bg-green-500 {
+  transition: all 0.3s ease;
+}
+
+// Responsive Design
+@media (max-width: 640px) {
+  .register-card {
+    margin: 1rem;
+  }
+  
+  .shape-1,
+  .shape-2,
+  .shape-3 {
+    opacity: 0.08;
+  }
+  
+  button {
+    &::before {
+      display: none;
+    }
+  }
+  
+  .logo-icon {
+    width: 70px;
+    height: 70px;
+    
+    svg {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
+
+// Smooth Transitions
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Focus Visible (Accessibility)
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+// Disabled State
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Input Autofill Styling
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+// Gradient Text
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+// Glass Morphism Effect
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+
+// Hover Lift Effect
+.group:hover {
+  svg {
+    transition: transform 0.3s ease;
+  }
+}
+
+// Password Toggle Button
+.input-wrapper button[type="button"] {
+  &:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 0.375rem;
+  }
+}
+
+// Success State for Inputs (when valid)
+input:valid:not(:placeholder-shown) {
+  border-color: #10b981;
+  
+  &:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  }
+}
+
+// Error State Enhancement
+input.ng-invalid.ng-touched {
+  border-color: #ef4444;
+  
+  &:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  }
+}
+
+// Label Animation on Focus
+.space-y-2:focus-within label {
+  svg {
+    transform: scale(1.2);
+    color: #6366f1;
+  }
+}

@@ -1,0 +1,29 @@
+<nav class="w-full bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+  <div class="text-xl font-bold text-indigo-700">
+    Service Platform
+  </div>
+  <div class="flex items-center gap-4">
+    <!-- Notifications -->
+    <button class="relative text-gray-600 hover:text-indigo-700 focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405M4 6v1a8.001 8.001 0 006.29 7.71M8 13a4 4 0 008 0m-5 6h2"/>
+      </svg>
+      <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+    </button>
+    <!-- Profile Dropdown/Logout -->
+    <div class="relative group">
+      <button class="flex items-center gap-2 text-gray-700 hover:text-indigo-700">
+        <img src="https://i.pravatar.cc/32" class="rounded-full w-8 h-8" alt="profile" />
+        <span>User Name</span>
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <!-- Dropdown e.g., Logout -->
+      <div class="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition">
+        <button class="block w-full px-4 py-2 text-left text-gray-600 hover:bg-indigo-50" (click)="logout()">Logout</button>
+        <button class="block w-full px-4 py-2 text-left text-gray-600 hover:bg-indigo-50">Settings</button>
+      </div>
+    </div>
+  </div>
+</nav>

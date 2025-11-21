@@ -2,19 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../enviroments/enviroment';
+import { AuthService } from '../../authentication/services/auth.service'; // Adjust path if needed
 
-// Request payload - matches your backend POST schema
 export interface BookingPayload {
   userId: string;
   providerId: string;
   serviceId: string;
-  timeSlotStart: string; // ISO datetime string
-  timeSlotEnd: string;   // ISO datetime string
+  timeSlotStart: string;
+  timeSlotEnd: string;
   location: string;
   estimatedCost: number;
 }
 
-// Response interface - what you get back from the API
 export interface Booking {
   id: string;
   userId: string;
@@ -37,16 +36,18 @@ export interface Booking {
 export class BookingsService {
   private apiUrl = `${environment.apiUrl}/Booking`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   createBooking(payload: BookingPayload): Observable<Booking> {
     return this.http.post<Booking>(this.apiUrl, payload);
   }
 
+  /** Returns only bookings for the logged-in user */
   getUserBookings(): Observable<Booking[]> {
-    // Assumes backend returns bookings for logged-in user
-    return this.http.get<Booking[]>(this.apiUrl);
-  }
+  const userId = this.auth.getLoggedInUserId();
+  return this.http.get<Booking[]>(`${this.apiUrl}/user/${userId}`);
+}
+
 
   getBookingById(bookingId: string): Observable<Booking> {
     return this.http.get<Booking>(`${this.apiUrl}/${bookingId}`);

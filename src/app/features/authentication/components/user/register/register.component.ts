@@ -7,27 +7,77 @@ import { Router } from '@angular/router';
   selector: 'app-register',
   standalone: false,
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
- registerForm: FormGroup;
+  registerForm: FormGroup;
   loading = false;
-  error: string | null=null;
+  error: string | null = null;
+  showPassword = false;
+  showConfirmPassword = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  // Password strength
+  passwordStrength: 'weak' | 'medium' | 'strong' | null = null;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
-      name: ['', Validators.required],
-      phone: ['', Validators.required],
-      address: ['', Validators.required],
-      preferredServices: ['', Validators.required],
     });
+  }
+
+  // Toggle password visibility
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  // Check password strength
+  onPasswordChange() {
+    const password = this.registerForm.get('password')?.value;
+    if (!password) {
+      this.passwordStrength = null;
+      return;
+    }
+
+    let strength = 0;
+    
+    // Check length
+    if (password.length >= 8) strength++;
+    
+    // Check for lowercase and uppercase
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    
+    // Check for numbers
+    if (/\d/.test(password)) strength++;
+    
+    // Check for special characters
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+    if (strength <= 1) {
+      this.passwordStrength = 'weak';
+    } else if (strength <= 3) {
+      this.passwordStrength = 'medium';
+    } else {
+      this.passwordStrength = 'strong';
+    }
   }
 
   onSubmit() {
     if (this.registerForm.invalid) {
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.registerForm.controls).forEach(key => {
+        this.registerForm.get(key)?.markAsTouched();
+      });
       return;
     }
 
@@ -37,14 +87,17 @@ export class RegisterComponent {
     }
 
     this.loading = true;
-    // Prepare registration data matching your backend DTO
+    this.error = null;
+
+    // Prepare registration data - only include required fields
     const registrationData = {
+      name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
-      name: this.registerForm.value.name,
-      phone: this.registerForm.value.phone,
-      address: this.registerForm.value.address,
-      preferredServices: this.registerForm.value.preferredServices,
+      // Add default values for backend required fields if needed
+      phone: '', // or remove if backend doesn't require
+      address: '', // or remove if backend doesn't require
+      preferredServices: '', // or remove if backend doesn't require
     };
 
     this.authService.registerUser(registrationData).subscribe({
@@ -54,10 +107,13 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.loading = false;
-        this.error = 'Registration failed, please try again.';
+        this.error = err.error?.message || 'Registration failed. Please try again.';
         console.error(err);
       },
     });
   }
 
+  navigateToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
 }

@@ -1,0 +1,132 @@
+// Smooth fade-in animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.fade-in-delay-1 {
+  animation: fadeIn 0.6s ease-out 0.1s both;
+}
+
+.fade-in-delay-2 {
+  animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+.fade-in-delay-3 {
+  animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+// Card hover effect
+.card-hover {
+  position: relative;
+  transition: all 0.3s ease;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+// Hide scrollbar but keep functionality
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Custom focus styles
+input:focus,
+button:focus {
+  outline: none;
+}
+
+// Smooth transitions for all interactive elements
+a, button {
+  transition: all 0.2s ease;
+}
+
+// Line clamp utility
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .sticky {
+    position: relative !important;
+    top: auto !important;
+  }
+}
+
+// Gradient text effect for headings (optional)
+h1, h2, h3 {
+  background-clip: text;
+}
+
+// Custom shadow for cards
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+// Smooth hover transitions for buttons
+button {
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Backdrop blur effect
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+// Pulse animation for notification badge
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -9,7 +9,8 @@ import { ProviderRegisterComponent } from './components/provider/provider-regist
 import { ProviderProfileComponent } from './components/provider/provider-profile/provider-profile.component';
 import { AdminApprovalComponent } from './components/admin/admin-approval/admin-approval.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ForgotPasswordComponent } from './components/user/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -19,13 +20,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProfileComponent,
     ProviderRegisterComponent,
     ProviderProfileComponent,
-    AdminApprovalComponent
+    AdminApprovalComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     AuthenticationRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class AuthenticationModule { }

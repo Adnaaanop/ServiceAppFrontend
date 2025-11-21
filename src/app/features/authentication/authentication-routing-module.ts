@@ -12,11 +12,14 @@ import { ProviderProfileComponent } from './components/provider/provider-profile
 
 // Admin components
 import { AdminApprovalComponent } from './components/admin/admin-approval/admin-approval.component';
+import { ForgotPasswordComponent } from './components/user/forgot-password/forgot-password.component';
 
 const routes: Routes = [
    { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+
 
   // Provider routes
   { path: 'provider/register', component: ProviderRegisterComponent },

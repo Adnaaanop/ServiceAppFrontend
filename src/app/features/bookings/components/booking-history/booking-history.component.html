@@ -11,14 +11,27 @@
 </div>
 
 <div *ngIf="!loading && bookings.length > 0" class="max-w-4xl mx-auto space-y-4 p-4">
-  <div *ngFor="let booking of bookings" class="border rounded p-4 shadow cursor-pointer hover:bg-blue-50" (click)="viewBookingDetails(booking.id)">
+  <div *ngFor="let booking of bookings" 
+       class="border rounded p-4 shadow cursor-pointer hover:bg-blue-50 relative" 
+       (click)="viewBookingDetails(booking.id)">
     <h3 class="text-lg font-semibold">Service ID: {{ booking.serviceId }}</h3>
     <p>
-      Status: <span [class]="booking.status === 'Pending' ? 'text-yellow-600' : 'text-green-600'">{{ booking.status }}</span><br />
+      Status: 
+      <span [class]="
+        booking.status === 'Pending' ? 'text-yellow-600' :
+        booking.status === 'Accepted' ? 'text-green-600' :
+        booking.status === 'Rejected' ? 'text-red-600' :
+        booking.status === 'Cancelled' ? 'text-gray-500' : ''
+      ">{{ booking.status }}</span><br />
       Location: {{ booking.location }}<br />
       Time Slot: {{ booking.timeSlotStart | date:'medium' }} - {{ booking.timeSlotEnd | date:'medium' }}<br />
       Estimated Cost: {{ booking.estimatedCost | currency }}<br />
       Created On: {{ booking.createdAt | date:'medium' }}
     </p>
+    <button
+      *ngIf="booking.status === 'Pending'"
+      class="absolute top-4 right-4 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+      (click)="cancelBooking(booking.id); $event.stopPropagation()"
+    >Cancel Booking</button>
   </div>
 </div>

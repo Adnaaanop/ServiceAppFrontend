@@ -1,0 +1,392 @@
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(5deg);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Floating Background Shapes
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: float 10s ease-in-out infinite;
+  filter: blur(60px);
+}
+
+.shape-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  top: -250px;
+  left: -250px;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  bottom: -200px;
+  right: -200px;
+  animation-delay: 3s;
+}
+
+.shape-3 {
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  top: 40%;
+  right: -225px;
+  animation-delay: 6s;
+}
+
+// Hero Animations
+.animate-fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out both;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+// Service Cards
+.service-card {
+  animation: scaleIn 0.5s ease-out both;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-8px);
+  }
+}
+
+// How It Works Cards
+.how-it-works-card {
+  animation: slideInLeft 0.6s ease-out both;
+}
+
+// Feature Cards
+.feature-card {
+  animation: scaleIn 0.5s ease-out both;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+// CTA Cards
+.cta-card {
+  animation: scaleIn 0.6s ease-out both;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+// Navigation
+nav {
+  transition: all 0.3s ease;
+  
+  &.scrolled {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Smooth Scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Button Hover Effects
+button {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+  
+  &:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+// Search Bar Focus Effect
+input[type="text"]:focus {
+  outline: none;
+}
+
+// Gradient Text
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .floating-shape {
+    opacity: 0.05;
+  }
+  
+  .shape-1,
+  .shape-2,
+  .shape-3 {
+    width: 300px;
+    height: 300px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  .service-card,
+  .feature-card,
+  .how-it-works-card {
+    animation-delay: 0s !important;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .text-5xl {
+    font-size: 2rem;
+  }
+  
+  .text-4xl {
+    font-size: 1.75rem;
+  }
+}
+
+// Backdrop Blur Support
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+// Link Hover Effects
+a {
+  transition: all 0.3s ease;
+}
+
+// Image Hover Effects
+img {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Section Spacing
+section {
+  position: relative;
+}
+
+// Card Shadows
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+// Transitions
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Focus States
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+// Loading States
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+// Hover Scale Effects
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.hover\:scale-110:hover {
+  transform: scale(1.1);
+}
+
+// Text Selection
+::selection {
+  background: #667eea;
+  color: white;
+}
+
+::-moz-selection {
+  background: #667eea;
+  color: white;
+}
+
+// Grid Gaps
+.gap-8 > * {
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+// Gradient Borders
+.gradient-border {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: inherit;
+    z-index: -1;
+  }
+}
+
+// Pulse Animation for CTAs
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
+  }
+}
+
+.cta-button {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+// Smooth Border Transitions
+.border-2 {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+// Container Max Widths
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+// Z-index Management
+.z-10 {
+  z-index: 10;
+}
+
+.z-50 {
+  z-index: 50;
+}
