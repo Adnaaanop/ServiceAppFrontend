@@ -38,6 +38,7 @@ export class MessagesService implements OnDestroy {
   sendMessage(msg: { bookingId: string, messageText: string, receiverId: string }): void {
     const senderId = this.auth.getLoggedInUserId();
     this.hubConnection.invoke('SendMessage',
+      senderId, 
       msg.messageText,
       msg.bookingId,
       senderId,
