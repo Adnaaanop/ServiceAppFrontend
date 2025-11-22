@@ -8,22 +8,26 @@ const routes: Routes = [
     path: '',
     component: UserDashboardComponent,
     children: [
-        { path: '', component: DashboardHomeComponent }, // Default dashboard home
+      { path: '', component: DashboardHomeComponent }, // Default dashboard home
       {
         path: 'bookings',
-        loadChildren: () => import('../bookings/bookings-module').then(m => m.BookingsModule)
+        loadChildren: () => import('../bookings/bookings-module').then((m) => m.BookingsModule),
       },
       {
         path: 'services',
-        loadChildren: () => import('../services/services-module').then(m => m.ServicesModule)
+        loadChildren: () => import('../services/services-module').then((m) => m.ServicesModule),
+      },
+      {
+        path: 'messages',
+        loadChildren: () => import('../messaging/messaging.module').then((m) => m.MessagingModule),
       },
       // Add other child routes as needed
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class UserDashboardRoutingModule { }
+export class UserDashboardRoutingModule {}

@@ -1,0 +1,10 @@
+<!-- booking-messages.component.html -->
+<div *ngIf="loading">Loading your chat conversations...</div>
+<ul *ngIf="!loading">
+  <li *ngFor="let booking of acceptedBookings" (click)="openChat(booking)">
+    Booking: {{ booking.serviceId }}<br>
+    Provider: {{ booking.providerId }}<br>
+    (Click to chat)
+  </li>
+</ul>
+<router-outlet></router-outlet>

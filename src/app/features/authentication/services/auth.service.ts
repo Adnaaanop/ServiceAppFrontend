@@ -128,4 +128,9 @@ export class AuthService {
     if (!token) return false;
     return !this.jwtHelper.isTokenExpired(token);
   }
+  /** Returns the raw access token string for use in API/SignalR */
+getAccessToken(): string | null {
+  return localStorage.getItem('access_token');
+}
+
 }

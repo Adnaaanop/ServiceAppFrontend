@@ -1,0 +1,15 @@
+<div class="chat-container">
+  <div class="chat-history">
+    <div *ngFor="let msg of messages" [ngClass]="{'my-message': msg.senderId === myUserId, 'other-message': msg.senderId !== myUserId}">
+      <span class="sender">
+        {{ msg.senderId === myUserId ? 'You' : 'Other' }}:
+      </span>
+      <span class="message">{{ msg.messageText }}</span>
+      <span class="timestamp">{{ msg.timestamp | date:'short' }}</span>
+    </div>
+  </div>
+  <div class="chat-input">
+    <input [(ngModel)]="newMessage" (keydown.enter)="send()" placeholder="Type your message..." />
+    <button (click)="send()" [disabled]="!newMessage.trim()">Send</button>
+  </div>
+</div>
