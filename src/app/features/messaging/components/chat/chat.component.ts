@@ -1,4 +1,4 @@
-// chat.component.ts
+// chat.component.ts - Improved Version
 import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { MessagesService } from '../../services/messages.service';
 import { Message } from '../../models/message.model';
@@ -15,12 +15,16 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges, AfterViewChe
   @Input() bookingId!: string;
   @Input() receiverId!: string;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('messageInput') messageInput!: ElementRef;
   
   messages: Message[] = [];
   newMessage = '';
   selectedFile: File | null = null;
   photoPreview: string | null = null;
   myUserId = '';
+  modalImageUrl: string | null = null;
+  isSending = false;
 
   private sub?: Subscription;
   private shouldScroll = false;
@@ -63,9 +67,11 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges, AfterViewChe
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop = 
-        this.scrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+      const container = this.scrollContainer.nativeElement;
+      container.scrollTop = container.scrollHeight;
+    } catch(err) { 
+      console.error('Scroll error:', err);
+    }
   }
 
   onFileSelected(event: Event): void {
@@ -81,46 +87,125 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges, AfterViewChe
   removePhoto(): void {
     this.selectedFile = null;
     this.photoPreview = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  openImageModal(imageUrl: string): void {
+    this.modalImageUrl = imageUrl;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeImageModal(): void {
+    this.modalImageUrl = null;
+    document.body.style.overflow = 'auto';
   }
 
   send(): void {
-    if (!this.bookingId || !this.receiverId || (!this.newMessage.trim() && !this.selectedFile)) {
-      console.error('Cannot send: missing data');
-      return;
-    }
-
-    if (this.selectedFile) {
-      // Use REST for file + text message
-      const formData = new FormData();
-      formData.append('BookingId', this.bookingId);
-      formData.append('SenderId', this.myUserId);
-      formData.append('ReceiverId', this.receiverId);
-      formData.append('MessageText', this.newMessage.trim());
-      formData.append('MediaFile', this.selectedFile);
-
-      this.messagesService.sendMessageWithFile(formData).subscribe(
-        (msg) => {
-          this.messages.push(msg);
-          this.removePhoto();
-          this.newMessage = '';
-          this.shouldScroll = true;
-        },
-        (error) => console.error('File message send error:', error)
-      );
-    } else {
-      // Use SignalR for text-only message
-      this.messagesService.sendMessage({
-        bookingId: this.bookingId,
-        receiverId: this.receiverId,
-        messageText: this.newMessage.trim()
-      });
-      this.newMessage = '';
-      this.shouldScroll = true;
-    }
+  if (!this.bookingId || !this.receiverId || (!this.newMessage.trim() && !this.selectedFile)) {
+    console.error('Cannot send: missing data');
+    return;
   }
+
+  if (this.isSending) {
+    return; // Prevent double sending
+  }
+
+  this.isSending = true;
+  const messageText = this.newMessage.trim();
+
+  if (this.selectedFile) {
+    // Send message with file
+    const formData = new FormData();
+    formData.append('BookingId', this.bookingId);
+    formData.append('SenderId', this.myUserId);
+    formData.append('ReceiverId', this.receiverId);
+    formData.append('MessageText', messageText);
+    formData.append('MediaFile', this.selectedFile);
+
+    // Create optimistic message
+    const optimisticMessage: Message = {
+      id: 'temp-' + Date.now(),
+      bookingId: this.bookingId,
+      senderId: this.myUserId,
+      receiverId: this.receiverId,
+      messageText: messageText,
+      mediaUrl: this.photoPreview || undefined,
+      timestamp: new Date().toISOString() // Changed here
+    };
+
+    // Add optimistic message to UI immediately
+    this.messages.push(optimisticMessage);
+    this.shouldScroll = true;
+    
+    // Clear inputs immediately
+    this.newMessage = '';
+    this.removePhoto();
+
+    this.messagesService.sendMessageWithFile(formData).subscribe(
+      (serverMessage) => {
+        // Replace optimistic message with real one from server
+        const index = this.messages.findIndex(m => m.id === optimisticMessage.id);
+        if (index !== -1) {
+          this.messages[index] = serverMessage;
+        }
+        this.isSending = false;
+        this.shouldScroll = true;
+        
+        // Focus back on input
+        if (this.messageInput) {
+          this.messageInput.nativeElement.focus();
+        }
+      },
+      (error) => {
+        console.error('File message send error:', error);
+        // Remove optimistic message on error
+        const index = this.messages.findIndex(m => m.id === optimisticMessage.id);
+        if (index !== -1) {
+          this.messages.splice(index, 1);
+        }
+        this.isSending = false;
+        alert('Failed to send message. Please try again.');
+      }
+    );
+  } else {
+    // Send text-only message
+    const optimisticMessage: Message = {
+      id: 'temp-' + Date.now(),
+      bookingId: this.bookingId,
+      senderId: this.myUserId,
+      receiverId: this.receiverId,
+      messageText: messageText,
+      timestamp: new Date().toISOString() // Changed here too
+    };
+
+    // Add optimistic message immediately
+    this.messages.push(optimisticMessage);
+    this.shouldScroll = true;
+    this.newMessage = '';
+    
+    // Send via SignalR
+    this.messagesService.sendMessage({
+      bookingId: this.bookingId,
+      receiverId: this.receiverId,
+      messageText: messageText
+    });
+
+    // SignalR will send back the real message through the subscription
+    // The optimistic message will be replaced when the real one arrives
+    setTimeout(() => {
+      this.isSending = false;
+      if (this.messageInput) {
+        this.messageInput.nativeElement.focus();
+      }
+    }, 500);
+  }
+}
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
     this.messagesService.ngOnDestroy();
+    document.body.style.overflow = 'auto'; // Clean up modal overflow lock
   }
 }
