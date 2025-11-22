@@ -1,10 +1,50 @@
-<!-- booking-messages.component.html -->
-<div *ngIf="loading">Loading your chat conversations...</div>
-<ul *ngIf="!loading">
-  <li *ngFor="let booking of acceptedBookings" (click)="openChat(booking)">
-    Booking: {{ booking.serviceId }}<br>
-    Provider: {{ booking.providerId }}<br>
-    (Click to chat)
-  </li>
-</ul>
-<router-outlet></router-outlet>
+<div class="messages-layout">
+  <!-- Sidebar with conversation list -->
+  <div class="conversations-sidebar">
+    <div class="sidebar-header">
+      <h2>Messages</h2>
+      <span class="booking-count">{{ acceptedBookings.length }} Active</span>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search conversations..." [(ngModel)]="searchQuery">
+    </div>
+
+    <div class="conversations-list">
+      <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading conversations...</p>
+      </div>
+
+      <div *ngIf="!loading && acceptedBookings.length === 0" class="empty-state">
+        <h3>No conversations yet</h3>
+        <p>Your accepted bookings will appear here</p>
+      </div>
+
+      <div *ngFor="let booking of acceptedBookings " 
+           class="conversation-item"
+           [class.active]="selectedBookingId === booking.id"
+           (click)="openChat(booking)">
+        <div class="conversation-info">
+          <h3 class="conversation-name">Booking #{{ booking.id.substring(0, 8) }}</h3>
+          <span class="conversation-time">{{ booking.createdAt | date:'short' }}</span>
+        </div>
+        <div class="conversation-preview">
+          <p class="service-name">{{ booking.serviceId }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main chat area -->
+  <div class="chat-main">
+    <app-chat *ngIf="selectedBookingId && selectedReceiverId"
+              [bookingId]="selectedBookingId"
+              [receiverId]="selectedReceiverId">
+    </app-chat>
+    <div *ngIf="!selectedBookingId" class="no-chat-selected">
+      <h2>Select a conversation</h2>
+      <p>Choose a booking from the list to start messaging</p>
+    </div>
+  </div>
+</div>

@@ -45,6 +45,10 @@ export class MessagesService implements OnDestroy {
       msg.receiverId
     ).catch(err => console.error('SignalR send error:', err));
   }
+  sendMessageWithFile(formData: FormData): Observable<Message> {
+  return this.http.post<Message>(`${this.apiUrl}`, formData);
+}
+
 
   /** Fetch chat history for a given booking via REST */
   fetchMessageHistory(bookingId: string): Observable<Message[]> {

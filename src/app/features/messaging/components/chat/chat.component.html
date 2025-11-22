@@ -1,15 +1,103 @@
+<!-- chat.component.html -->
 <div class="chat-container">
-  <div class="chat-history">
-    <div *ngFor="let msg of messages" [ngClass]="{'my-message': msg.senderId === myUserId, 'other-message': msg.senderId !== myUserId}">
-      <span class="sender">
-        {{ msg.senderId === myUserId ? 'You' : 'Other' }}:
-      </span>
-      <span class="message">{{ msg.messageText }}</span>
-      <span class="timestamp">{{ msg.timestamp | date:'short' }}</span>
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="header-info">
+      <div class="avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h3>Booking #{{ bookingId?.substring(0, 8) }}</h3>
+        <span class="status">Active</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </button>
+      <button class="icon-btn" title="More options">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="12" cy="5" r="1"></circle>
+          <circle cx="12" cy="19" r="1"></circle>
+        </svg>
+      </button>
     </div>
   </div>
-  <div class="chat-input">
-    <input [(ngModel)]="newMessage" (keydown.enter)="send()" placeholder="Type your message..." />
-    <button (click)="send()" [disabled]="!newMessage.trim()">Send</button>
+
+  <!-- Messages Area -->
+  <div class="chat-messages" #scrollContainer>
+    <div class="messages-wrapper">
+      <div *ngFor="let msg of messages" 
+           class="message-row"
+           [class.own-message]="msg.senderId === myUserId">
+        <div class="message-bubble">
+          <span class="message-text">{{ msg.messageText }}</span>
+          
+          <div *ngIf="msg.mediaUrl" class="message-media">
+            <img [src]="msg.mediaUrl" alt="Attachment" />
+          </div>
+          
+          <span class="message-time">{{ msg.timestamp | date:'shortTime' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="chat-input-area">
+    <div *ngIf="photoPreview" class="photo-preview-container">
+      <div class="preview-wrapper">
+        <img [src]="photoPreview" alt="Preview" />
+        <button class="remove-preview-btn" (click)="removePhoto()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="input-wrapper">
+      <button class="icon-btn emoji-btn" title="Emoji">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+          <line x1="9" y1="9" x2="9.01" y2="9"></line>
+          <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+      </button>
+
+      <label class="icon-btn attach-btn" title="Attach file">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+        </svg>
+        <input type="file" 
+               (change)="onFileSelected($event)" 
+               accept="image/*"
+               style="display: none;" />
+      </label>
+
+      <input type="text"
+             [(ngModel)]="newMessage"
+             (keydown.enter)="send()"
+             placeholder="Type a message"
+             class="message-input" />
+
+      <button class="send-btn" 
+              (click)="send()"
+              [disabled]="!newMessage.trim() && !selectedFile"
+              [class.has-content]="newMessage.trim() || selectedFile">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>

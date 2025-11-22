@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Booking, BookingsService } from '../../../bookings/services/bookings.service';
 
 @Component({
   selector: 'app-booking-messages',
   templateUrl: './booking-messages.component.html',
+  styleUrls: ['./booking-messages.component.scss'],
   standalone: false
 })
 export class BookingMessagesComponent implements OnInit {
   acceptedBookings: Booking[] = [];
   loading = true;
+  searchQuery = '';
+  selectedBookingId: string | null = null;
+  selectedReceiverId: string | null = null;
 
-  constructor(private bookingsService: BookingsService, private router: Router) {}
+  constructor(private bookingsService: BookingsService) {}
 
   ngOnInit() {
     this.bookingsService.getUserBookings().subscribe(bookings => {
@@ -21,8 +24,8 @@ export class BookingMessagesComponent implements OnInit {
   }
 
   openChat(booking: Booking) {
-    this.router.navigate(['/dashboard/messages', booking.id], {
-      queryParams: { providerId: booking.providerId }
-    });
+    this.selectedBookingId = booking.id;
+    this.selectedReceiverId = booking.providerId;
+    // Don't navigate, just update local properties!
   }
 }
