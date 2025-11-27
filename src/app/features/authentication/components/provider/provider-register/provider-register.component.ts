@@ -7,7 +7,7 @@ import { AuthService } from '../../../services/auth.service';
   selector: 'app-provider-register',
   templateUrl: './provider-register.component.html',
   styleUrls: ['./provider-register.component.scss'],
-  standalone: false
+  standalone: false 
 })
 export class ProviderRegisterComponent {
 

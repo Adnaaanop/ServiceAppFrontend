@@ -11,6 +11,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
   loginForm!: FormGroup;
   loading = false;
   error: string | null = null;
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private jwtHelper: JwtHelperService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -42,17 +43,35 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
-        this.loading = false;
-        localStorage.setItem('access_token', res.data.token);
-        const decodedToken = this.jwtHelper.decodeToken(res.data.token);
-        const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-        if (role === 'Provider') {
-  this.router.navigate(['/dashboard']); // or to a provider-specific dashboard if you have one
-} else {
-  this.router.navigate(['/dashboard']);
-}
+  this.loading = false;
+  localStorage.setItem('access_token', res.data.token);
 
-      },
+  const decodedToken = this.jwtHelper.decodeToken(res.data.token);
+  console.log('decodedToken', decodedToken);
+
+  // Read the role claim
+  let roleClaim =
+    decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+  // Handle both string and array cases
+  let roles: string[] = [];
+  if (Array.isArray(roleClaim)) {
+    roles = roleClaim;
+  } else if (typeof roleClaim === 'string' && roleClaim) {
+    roles = [roleClaim];
+  }
+
+  console.log('roles from token', roles);
+
+  if (roles.includes('Provider')) {
+    this.router.navigate(['/provider/dashboard']);
+  } else if (roles.includes('Admin') || roles.includes('Super Admin')) {
+    this.router.navigate(['/admin/dashboard']);
+  } else {
+    this.router.navigate(['/dashboard']);
+  }
+}
+,
       error: () => {
         this.loading = false;
         this.error = 'Invalid email or password';
@@ -62,7 +81,6 @@ export class LoginComponent implements OnInit {
 
   goToForgotPassword() {
     this.router.navigate(['/auth/forgot-password']);
-
   }
 
   navigateToRegister() {
