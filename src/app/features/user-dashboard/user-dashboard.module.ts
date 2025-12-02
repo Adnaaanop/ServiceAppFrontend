@@ -5,17 +5,17 @@ import { SidebarComponent } from '../layout/sidebar/sidebar.component';
 import { UserDashboardRoutingModule } from './user-dashboard-routing.module';
 import { NavbarComponent } from '../layout/navbar/navbar.component';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
+import { LayoutModule } from '../layout/layout.module';
 
 @NgModule({
   declarations: [
     UserDashboardComponent,
-    SidebarComponent, // If not already declared in a shared/layout module
-    NavbarComponent,
     DashboardHomeComponent
   ],
   imports: [
     CommonModule,
-    UserDashboardRoutingModule
+    UserDashboardRoutingModule,
+    LayoutModule
   ]
 })
 export class UserDashboardModule { }

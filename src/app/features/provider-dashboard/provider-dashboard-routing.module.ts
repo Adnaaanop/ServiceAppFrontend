@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProviderDashboardComponent } from './provider-dashboard.component';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
+import { MyServicesComponent } from './components/my-services/my-services.component';
 
 const routes: Routes = [
   {
@@ -9,7 +10,8 @@ const routes: Routes = [
     component: ProviderDashboardComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: DashboardHomeComponent }
+      { path: 'home', component: DashboardHomeComponent },
+      { path: 'services', component: MyServicesComponent }
     ]
   }
 ];

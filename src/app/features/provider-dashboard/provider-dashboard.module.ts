@@ -3,15 +3,22 @@ import { CommonModule } from '@angular/common';
 import { ProviderDashboardRoutingModule } from './provider-dashboard-routing.module';
 import { ProviderDashboardComponent } from './provider-dashboard.component';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
+import { LayoutModule } from '../layout/layout.module';
+import { FormsModule } from '@angular/forms';
+import { MyServicesComponent } from './components/my-services/my-services.component';
 
 @NgModule({
   declarations: [
     ProviderDashboardComponent,
-    DashboardHomeComponent
+    DashboardHomeComponent,
+    MyServicesComponent
+    
   ],
   imports: [
     CommonModule,
-    ProviderDashboardRoutingModule
+    ProviderDashboardRoutingModule,
+    LayoutModule,
+    FormsModule
   ]
 })
 export class ProviderDashboardModule { }
