@@ -48,7 +48,7 @@ export class ProviderServicesService {
 
   createService(payload: ServiceCreatePayload): Observable<ProviderServiceItem> {
     const formData = new FormData();
-    // names must match ServiceCreateDto
+    // names must match ServiceCreateDtoo
     formData.append('CategoryId', payload.categoryId);
     formData.append('Description', payload.description ?? '');
     formData.append('PricingJson', payload.pricingJson);
