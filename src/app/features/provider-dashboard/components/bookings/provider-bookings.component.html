@@ -1,0 +1,75 @@
+<div class="p-4 lg:p-6">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl font-bold text-gray-900">My Bookings</h1>
+  </div>
+
+  <div *ngIf="loading" class="text-sm text-gray-500 mb-2">Loading...</div>
+  <div *ngIf="error" class="text-sm text-red-600 mb-2">{{ error }}</div>
+
+  <div *ngIf="!loading && bookings.length === 0" class="text-sm text-gray-500">
+    You have no bookings yet.
+  </div>
+
+  <div *ngIf="bookings.length > 0" class="space-y-4">
+    <div
+      *ngFor="let b of bookings"
+      class="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold text-gray-900">
+            Booking #{{ b.id | slice:0:8 }}
+          </p>
+          <p class="text-xs text-gray-500">
+            {{ b.timeSlotStart | date:'medium' }}
+            <span *ngIf="b.timeSlotEnd"> – {{ b.timeSlotEnd | date:'shortTime' }}</span>
+          </p>
+        </div>
+
+        <span
+          class="px-2 py-1 text-xs rounded-full"
+          [ngClass]="{
+            'bg-yellow-100 text-yellow-700': isPending(b),
+            'bg-blue-100 text-blue-700': isAccepted(b),
+            'bg-green-100 text-green-700': isCompleted(b)
+          }"
+        >
+          {{ b.status }}
+        </span>
+      </div>
+
+      <p class="text-xs text-gray-600">
+        Location: {{ b.location }}
+      </p>
+      <p class="text-xs text-gray-600">
+        Est: {{ b.estimatedCost ?? '-' }} | Actual: {{ b.actualCost ?? '-' }}
+      </p>
+
+      <div class="flex gap-2 mt-2">
+        <button
+          *ngIf="isPending(b)"
+          class="flex-1 px-3 py-2 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
+          (click)="changeStatus(b, 'Accepted')">
+          Accept
+        </button>
+        <button
+          *ngIf="isPending(b)"
+          class="flex-1 px-3 py-2 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
+          (click)="changeStatus(b, 'Rejected')">
+          Reject
+        </button>
+        <button
+          *ngIf="isAccepted(b)"
+          class="flex-1 px-3 py-2 text-xs font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+          (click)="changeStatus(b, 'Completed')">
+          Mark Completed
+        </button>
+        <button
+          class="px-3 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
+          (click)="delete(b)">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
