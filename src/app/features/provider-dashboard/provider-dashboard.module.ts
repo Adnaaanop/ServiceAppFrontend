@@ -7,13 +7,16 @@ import { LayoutModule } from '../layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { MyServicesComponent } from './components/my-services/my-services.component';
 import { ProviderBookingsComponent } from './components/bookings/provider-bookings.component';
+import { ProviderProfileComponent } from './components/profile/provider-profile.component';
+
 
 @NgModule({
   declarations: [
     ProviderDashboardComponent,
     DashboardHomeComponent,
     MyServicesComponent,
-    ProviderBookingsComponent 
+    ProviderBookingsComponent,
+    ProviderProfileComponent
     
   ],
   imports: [

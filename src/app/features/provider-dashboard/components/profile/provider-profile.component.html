@@ -1,0 +1,141 @@
+<!-- provider-dashboard/components/profile/provider-profile.component.html -->
+<div class="p-4 lg:p-6">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">Provider Profile</h1>
+
+  <div *ngIf="loading" class="text-sm text-gray-500 mb-2">Loading...</div>
+  <div *ngIf="error" class="text-sm text-red-600 mb-2">{{ error }}</div>
+
+  <div *ngIf="!loading && !profile && !error" class="text-sm text-gray-500">
+    Profile not found.
+  </div>
+
+  <div *ngIf="profile" class="bg-white rounded-xl shadow-md p-6 space-y-5">
+    <div class="flex items-center gap-4">
+      <img
+        *ngIf="profile.profilePhotoUrl"
+        [src]="profile?.profilePhotoUrl"
+        class="w-16 h-16 rounded-full object-cover border"
+      />
+      <div>
+        <h2 class="text-xl font-semibold text-gray-900">
+          {{ profile?.businessName }}
+        </h2>
+        <p class="text-sm text-gray-600">
+          {{ profile?.businessDescription || 'No description provided.' }}
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">
+          Service Categories
+        </h3>
+        <div
+          *ngIf="profile.serviceCategories?.length; else noCategories"
+          class="flex flex-wrap gap-1"
+        >
+          <span
+            *ngFor="let c of profile.serviceCategories"
+            class="px-2 py-1 text-xs bg-indigo-50 text-indigo-700 rounded-full"
+          >
+            {{ c }}
+          </span>
+        </div>
+        <ng-template #noCategories>
+          <p class="text-xs text-gray-400">No categories added.</p>
+        </ng-template>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">
+          Service Areas
+        </h3>
+        <div
+          *ngIf="profile.serviceAreas?.length; else noAreas"
+          class="flex flex-wrap gap-1"
+        >
+          <span
+            *ngFor="let a of profile.serviceAreas"
+            class="px-2 py-1 text-xs bg-slate-50 text-slate-700 rounded-full"
+          >
+            {{ a }}
+          </span>
+        </div>
+        <ng-template #noAreas>
+          <p class="text-xs text-gray-400">No service areas added.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">
+          Certificates
+        </h3>
+        <ul
+          *ngIf="profile.certificateUrls?.length; else noCerts"
+          class="text-xs text-indigo-700 space-y-1"
+        >
+          <li *ngFor="let url of profile.certificateUrls">
+            <a [href]="url" target="_blank" rel="noopener" class="underline">
+              View certificate
+            </a>
+          </li>
+        </ul>
+        <ng-template #noCerts>
+          <p class="text-xs text-gray-400">No certificates uploaded.</p>
+        </ng-template>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">
+          Licenses
+        </h3>
+        <ul
+          *ngIf="profile.licenseUrls?.length; else noLicenses"
+          class="text-xs text-indigo-700 space-y-1"
+        >
+          <li *ngFor="let url of profile.licenseUrls">
+            <a [href]="url" target="_blank" rel="noopener" class="underline">
+              View license
+            </a>
+          </li>
+        </ul>
+        <ng-template #noLicenses>
+          <p class="text-xs text-gray-400">No licenses uploaded.</p>
+        </ng-template>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">
+          Documents
+        </h3>
+        <ul
+          *ngIf="profile.documentUrls?.length; else noDocs"
+          class="text-xs text-indigo-700 space-y-1"
+        >
+          <li *ngFor="let url of profile.documentUrls">
+            <a [href]="url" target="_blank" rel="noopener" class="underline">
+              View document
+            </a>
+          </li>
+        </ul>
+        <ng-template #noDocs>
+          <p class="text-xs text-gray-400">No documents uploaded.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">
+        Availability
+      </h3>
+      <pre
+        class="text-xs text-gray-700 bg-slate-50 rounded-lg p-3 overflow-x-auto"
+      >
+{{ profile?.availabilityJson || 'No availability set.' }}
+      </pre>
+    </div>
+  </div>
+</div>

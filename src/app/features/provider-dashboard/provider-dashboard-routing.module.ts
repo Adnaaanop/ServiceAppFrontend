@@ -4,6 +4,7 @@ import { ProviderDashboardComponent } from './provider-dashboard.component';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 import { MyServicesComponent } from './components/my-services/my-services.component';
 import { ProviderBookingsComponent } from './components/bookings/provider-bookings.component';
+import { ProviderProfileComponent } from './components/profile/provider-profile.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: DashboardHomeComponent },
       { path: 'services', component: MyServicesComponent },
-      { path: 'bookings', component: ProviderBookingsComponent } 
+      { path: 'bookings', component: ProviderBookingsComponent },
+      { path: 'profile', component: ProviderProfileComponent } 
     ]
   }
 ];
